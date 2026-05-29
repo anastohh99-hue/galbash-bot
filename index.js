@@ -28,7 +28,7 @@ client.on('guildMemberAdd', async member => {
 
     // 1. رسم الخلفية (الصورة اللي رفعتها)
     // ملاحظة: إذا غيرت اسم الصورة في قيت هاب، لازم تغير الاسم هنا بين القوسين
-    const background = await Canvas.loadImage('./welcame.jpg');
+    const background = await Canvas.loadImage('./welcame.png');
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
     // 2. إعداد مقاس ومكان الصورة الشخصية (تحت كلمة ويلكم يسار)
