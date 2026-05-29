@@ -25,27 +25,37 @@ client.on('guildMemberAdd', async member => {
     const canvas = Canvas.createCanvas(700, 250);
     const ctx = canvas.getContext('2d');
 
+    // خلفية الصورة
     ctx.fillStyle = '#2c2f33'; 
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    // النص الأول في الصورة
     ctx.font = '36px sans-serif';
     ctx.fillStyle = '#ffffff';
     ctx.fillText('Welcome to the server!', 250, 100);
 
+    // اسم العضو في الصورة
     ctx.font = '48px sans-serif';
     ctx.fillStyle = '#5865F2';
     ctx.fillText(member.user.username, 250, 160);
 
+    // قص الصورة الشخصية بشكل دائري
     ctx.beginPath();
     ctx.arc(125, 125, 100, 0, Math.PI * 2, true); 
     ctx.closePath();
     ctx.clip();
 
+    // رسم الصورة الشخصية
     const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: 'png' }));
     ctx.drawImage(avatar, 25, 25, 200, 200);
 
     const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'welcome-image.png' });
-    channel.send({ content: `أهلاً بك <@${member.id}>! 🎉`, files: [attachment] });
+
+    // رسالة الترحيب النصية الفخمة اللي طلبتها
+    const welcomeText = `𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 Galbash | غلبش\n✦ ・  𝐌𝐞𝐦𝐛𝐞𝐫 : <@${member.id}>\n✦ ・  𝐇𝐢𝐬 𝐍𝐮𝐦𝐛𝐞𝐫 : ${member.guild.memberCount}\n✦ ・  𝐑𝐮𝐥𝐞𝐬 ⁠📚〢القوانين`;
+
+    // إرسال الرسالة مع الصورة
+    channel.send({ content: welcomeText, files: [attachment] });
 });
 
 // السطر الأخير لتسجيل الدخول
