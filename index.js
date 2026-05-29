@@ -2,7 +2,7 @@ const keepAlive = require('./keep_alive.js');
 const { Client, GatewayIntentBits, AttachmentBuilder } = require('discord.js');
 const Canvas = require('canvas');
 
-// الآيدي الخاص بروم الترحيب (الروم اللي البوت بيرسل فيه الصورة)
+// الآيدي الخاص بروم الترحيب
 const WELCOME_CHANNEL_ID = '1505581496071753747';
 
 const client = new Client({
