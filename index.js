@@ -22,7 +22,6 @@ client.on('guildMemberAdd', async member => {
     const channel = member.guild.channels.cache.get(WELCOME_CHANNEL_ID);
     if (!channel) return;
 
-    // رسالة الترحيب النصية
     const welcomeText = `𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 Galbash | غلبش\n✦ ・  𝐌e𝐦𝐛𝐞𝐫 : <@${member.id}>\n✦ ・  𝐇𝐢𝐬 𝐍𝐮𝐦𝐛𝐞𝐫 : ${member.guild.memberCount}\n✦ ・  Rules : <#1505581491487375491>`;
 
     try {
@@ -33,10 +32,10 @@ client.on('guildMemberAdd', async member => {
         const background = await Canvas.loadImage('./welcame.png');
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-        // 🌟 المقاسات الجديدة (أكبر، يمين، تحت) 🌟
-        const avatarSize = 125; // الحجم الجديد (أكبر)
-        const avatarX = 185;    // سحبناها لليمين
-        const avatarY = 220;    // نزلناها لتحت
+        // 🌟 المقاسات الجديدة بناءً على رسمتك (أكبر، ويمين في النص) 🌟
+        const avatarSize = 160; // كبرنا الحجم بشكل واضح
+        const avatarX = 290;    // سحبناها لليمين في المكان الفاضي اللي حددته
+        const avatarY = 150;    // رفعناها شوي عشان تتناسق مع الحجم الجديد
 
         // قص الدائرة
         const radius = avatarSize / 2;
