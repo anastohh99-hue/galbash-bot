@@ -33,7 +33,7 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // 🌟 المقاسات الجديدة بناءً على رسمتك (أكبر، ويمين في النص) 🌟
-        const avatarSize = 180; // كبرنا الحجم بشكل واضح
+        const avatarSize = 500; // كبرنا الحجم بشكل واضح
         const avatarX = 150;    // سحبناها لليمين في المكان الفاضي اللي حددته
         const avatarY = 165;    // رفعناها شوي عشان تتناسق مع الحجم الجديد
 
