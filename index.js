@@ -32,20 +32,20 @@ client.on('guildMemberAdd', async member => {
         const background = await Canvas.loadImage('./welcame.png');
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-        // 🌟 المقاسات الجديدة بناءً على رسمتك (أكبر، ويمين في النص) 🌟
-        const avatarSize = 200; // كبرنا الحجم بشكل واضح
-        const avatarX = 150;    // سحبناها لليمين في المكان الفاضي اللي حددته
-        const avatarY = 165;    // رفعناها شوي عشان تتناسق مع الحجم الجديد
+        // 🟢 عدل الأرقام الثلاثة هذي فقط 🟢
+        const avatarSize = 160; // 👈 كبر هذا الرقم (مثلاً خله 200) وبتكبر الدائرة 100%
+        const avatarX = 290;    // 👈 هذا يدفها يمين ويسار فقط
+        const avatarY = 150;    // 👈 هذا يرفعها وينزلها فقط
 
-        // قص الدائرة
+        // قص الدائرة (لا تعدل هنا أبداً)
         const radius = avatarSize / 2;
         ctx.beginPath();
         ctx.arc(avatarX + radius, avatarY + radius, radius, 0, Math.PI * 2, true);
         ctx.closePath();
         ctx.clip();
 
-        // رسم صورة العضو
-        const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: 'png' }));
+        // رسم صورة العضو بأعلى جودة (size: 1024) (لا تعدل هنا أبداً)
+        const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: 'png', size: 1024 }));
         ctx.drawImage(avatar, avatarX, avatarY, avatarSize, avatarSize);
 
         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'welcome-image.png' });
