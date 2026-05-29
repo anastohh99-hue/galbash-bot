@@ -35,7 +35,7 @@ client.on('guildMemberAdd', async member => {
         // 🌟 المقاسات عشان تلاحظ الفرق بعينك (يسار أكثر) 🌟
         const avatarSize = 120; 
         const avatarX = 270;    // دفيناها يسار بزيادة عشان يبين الفرق
-        const avatarY = 10;    
+        const avatarY = 100;    
 
         // قص الدائرة
         const radius = avatarSize / 2;
