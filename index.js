@@ -32,19 +32,19 @@ client.on('guildMemberAdd', async member => {
         const background = await Canvas.loadImage('./welcame.png');
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-      // 🌟 المقاسات الضخمة الجديدة 🌟
-        const avatarSize = 200; // كبرناها بشكل ضخم جداً عشان تكسر الخداع البصري
-        const avatarX = 360;    // دفيناها لليمين في المكان الفاضي بين الكلمة والشعار
-        const avatarY = 100;    // رفعناها فوق شوي عشان تتوسط البانر
-        
-        // قص الدائرة (لا تعدل هنا أبداً)
+        // 🌟 المقاسات بعد التعديل (شوي يسار) 🌟
+        const avatarSize = 200; // الحجم ضخم زي ما هو
+        const avatarX = 320;    // نقصنا الرقم عشان تنسحب يسار شوي
+        const avatarY = 100;    // الارتفاع زي ما هو
+
+        // قص الدائرة
         const radius = avatarSize / 2;
         ctx.beginPath();
         ctx.arc(avatarX + radius, avatarY + radius, radius, 0, Math.PI * 2, true);
         ctx.closePath();
         ctx.clip();
 
-        // رسم صورة العضو بأعلى جودة (size: 1024) (لا تعدل هنا أبداً)
+        // رسم صورة العضو بأعلى جودة (size: 1024)
         const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: 'png', size: 1024 }));
         ctx.drawImage(avatar, avatarX, avatarY, avatarSize, avatarSize);
 
