@@ -33,9 +33,9 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // 🌟 المقاسات عشان تلاحظ الفرق بعينك (يسار أكثر) 🌟
-        const avatarSize = 0; 
-        const avatarX = 0;    // دفيناها يسار بزيادة عشان يبين الفرق
-        const avatarY = 0;    
+        const avatarSize = 1; 
+        const avatarX = 1;    // دفيناها يسار بزيادة عشان يبين الفرق
+        const avatarY = 1;    
 
         // قص الدائرة
         const radius = avatarSize / 2;
