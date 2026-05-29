@@ -33,9 +33,9 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // 🌟 المقاسات الجديدة بناءً على رسمتك (أكبر، ويمين في النص) 🌟
-        const avatarSize = 160; // كبرنا الحجم بشكل واضح
-        const avatarX = 290;    // سحبناها لليمين في المكان الفاضي اللي حددته
-        const avatarY = 150;    // رفعناها شوي عشان تتناسق مع الحجم الجديد
+        const avatarSize = 200; // كبرنا الحجم بشكل واضح
+        const avatarX = 350;    // سحبناها لليمين في المكان الفاضي اللي حددته
+        const avatarY = 180;    // رفعناها شوي عشان تتناسق مع الحجم الجديد
 
         // قص الدائرة
         const radius = avatarSize / 2;
