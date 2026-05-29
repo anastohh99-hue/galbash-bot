@@ -22,36 +22,34 @@ client.on('guildMemberAdd', async member => {
     const channel = member.guild.channels.cache.get(WELCOME_CHANNEL_ID);
     if (!channel) return;
 
-    const canvas = Canvas.createCanvas(700, 250);
+    // حددنا مقاس مناسب للصورة عشان تتناسق مع البانر حقك
+    const canvas = Canvas.createCanvas(800, 360);
     const ctx = canvas.getContext('2d');
 
-    // خلفية الصورة
-    ctx.fillStyle = '#2c2f33'; 
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // 1. رسم الخلفية (الصورة اللي رفعتها)
+    // ملاحظة: إذا غيرت اسم الصورة في قيت هاب، لازم تغير الاسم هنا بين القوسين
+    const background = await Canvas.loadImage('./welcame.jpg');
+    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-    // النص الأول في الصورة
-    ctx.font = '36px sans-serif';
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText('Welcome to the server!', 250, 100);
-
-    // اسم العضو في الصورة
-    ctx.font = '48px sans-serif';
-    ctx.fillStyle = '#5865F2';
-    ctx.fillText(member.user.username, 250, 160);
+    // 2. إعداد مقاس ومكان الصورة الشخصية (تحت كلمة ويلكم يسار)
+    const avatarSize = 130; // حجم الدائرة
+    const avatarX = 120;    // البعد من اليسار
+    const avatarY = 160;    // البعد من فوق
 
     // قص الصورة الشخصية بشكل دائري
+    const radius = avatarSize / 2;
     ctx.beginPath();
-    ctx.arc(125, 125, 100, 0, Math.PI * 2, true); 
+    ctx.arc(avatarX + radius, avatarY + radius, radius, 0, Math.PI * 2, true);
     ctx.closePath();
     ctx.clip();
 
-    // رسم الصورة الشخصية
+    // جلب صورة العضو ورسمها داخل الدائرة
     const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: 'png' }));
-    ctx.drawImage(avatar, 25, 25, 200, 200);
+    ctx.drawImage(avatar, avatarX, avatarY, avatarSize, avatarSize);
 
     const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'welcome-image.png' });
 
-    // رسالة الترحيب النصية الفخمة مع المنشن التلقائي للعضو وروم القوانين
+    // رسالة الترحيب النصية
     const welcomeText = `𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 Galbash | غلبش\n✦ ・  𝐌𝐞𝐦𝐛𝐞𝐫 : <@${member.id}>\n✦ ・  𝐇𝐢𝐬 𝐍𝐮𝐦𝐛𝐞𝐫 : ${member.guild.memberCount}\n✦ ・  Rules : <#1505581491487375491>`;
 
     // إرسال الرسالة مع الصورة
