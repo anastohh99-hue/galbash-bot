@@ -32,10 +32,10 @@ client.on('guildMemberAdd', async member => {
         const background = await Canvas.loadImage('./welcame.png');
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-        // 🌟 المقاسات بعد التعديل (شوي يسار) 🌟
-        const avatarSize = 200; // الحجم ضخم زي ما هو
-        const avatarX = 320;    // نقصنا الرقم عشان تنسحب يسار شوي
-        const avatarY = 100;    // الارتفاع زي ما هو
+        // 🌟 المقاسات عشان تلاحظ الفرق بعينك (يسار أكثر) 🌟
+        const avatarSize = 200; 
+        const avatarX = 300;    // دفيناها يسار بزيادة عشان يبين الفرق
+        const avatarY = 100;    
 
         // قص الدائرة
         const radius = avatarSize / 2;
@@ -44,11 +44,12 @@ client.on('guildMemberAdd', async member => {
         ctx.closePath();
         ctx.clip();
 
-        // رسم صورة العضو بأعلى جودة (size: 1024)
+        // رسم صورة العضو بأعلى جودة
         const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: 'png', size: 1024 }));
         ctx.drawImage(avatar, avatarX, avatarY, avatarSize, avatarSize);
 
-        const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'welcome-image.png' });
+        // 🚨 الحل السحري لمشكلة تعليق الصورة في ديسكورد 🚨
+        const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `welcome-${Date.now()}.png` });
 
         await channel.send({ content: welcomeText, files: [attachment] });
         console.log(`📸 تم إرسال صورة الترحيب بنجاح لـ ${member.user.username}`);
