@@ -51,8 +51,8 @@ client.on('guildMemberAdd', async member => {
 
     const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'welcome-image.png' });
 
-    // رسالة الترحيب النصية الفخمة اللي طلبتها
-    const welcomeText = `𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 Galbash | غلبش\n✦ ・  𝐌𝐞𝐦𝐛𝐞𝐫 : <@${member.id}>\n✦ ・  𝐇𝐢𝐬 𝐍𝐮𝐦𝐛𝐞𝐫 : ${member.guild.memberCount}\n✦ ・  𝐑𝐮𝐥𝐞𝐬 ⁠📚〢القوانين`;
+    // رسالة الترحيب النصية الفخمة مع المنشن التلقائي للعضو وروم القوانين
+    const welcomeText = `𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 Galbash | غلبش\n✦ ・  𝐌𝐞𝐦𝐛𝐞𝐫 : <@${member.id}>\n✦ ・  𝐇𝐢𝐬 𝐍𝐮𝐦𝐛𝐞𝐫 : ${member.guild.memberCount}\n✦ ・  𝐑𝐮𝐥𝐞𝐬 ⁠📚〢القوانين : <#1458430517576728718>`;
 
     // إرسال الرسالة مع الصورة
     channel.send({ content: welcomeText, files: [attachment] });
