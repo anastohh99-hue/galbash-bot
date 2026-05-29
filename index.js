@@ -32,11 +32,11 @@ client.on('guildMemberAdd', async member => {
         const background = await Canvas.loadImage('./welcame.png');
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-        // 🟢 عدل الأرقام الثلاثة هذي فقط 🟢
-        const avatarSize = 160; // 👈 كبر هذا الرقم (مثلاً خله 200) وبتكبر الدائرة 100%
-        const avatarX = 300;    // 👈 هذا يدفها يمين ويسار فقط
-        const avatarY = 150;    // 👈 هذا يرفعها وينزلها فقط
-
+      // 🌟 المقاسات الضخمة الجديدة 🌟
+        const avatarSize = 200; // كبرناها بشكل ضخم جداً عشان تكسر الخداع البصري
+        const avatarX = 360;    // دفيناها لليمين في المكان الفاضي بين الكلمة والشعار
+        const avatarY = 100;    // رفعناها فوق شوي عشان تتوسط البانر
+        
         // قص الدائرة (لا تعدل هنا أبداً)
         const radius = avatarSize / 2;
         ctx.beginPath();
