@@ -3,7 +3,7 @@ const { Client, GatewayIntentBits, AttachmentBuilder } = require('discord.js');
 const Canvas = require('canvas');
 
 // التوكن الخاص بالبوت
-const TOKEN = process.env.TOKEN;
+client.login(process.env.TOKEN);
 // الآيدي الخاص بروم الترحيب
 const WELCOME_CHANNEL_ID = '1505581496071753747';
 
