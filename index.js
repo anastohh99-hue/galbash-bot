@@ -2,8 +2,6 @@ const keepAlive = require('./keep_alive.js');
 const { Client, GatewayIntentBits, AttachmentBuilder } = require('discord.js');
 const Canvas = require('canvas');
 
-// التوكن الخاص بالبوت
-client.login(process.env.TOKEN);
 // الآيدي الخاص بروم الترحيب
 const WELCOME_CHANNEL_ID = '1505581496071753747';
 
@@ -47,8 +45,8 @@ client.on('guildMemberAdd', async member => {
     ctx.drawImage(avatar, 25, 25, 200, 200);
 
     const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'welcome-image.png' });
-
     channel.send({ content: `أهلاً بك <@${member.id}>! 🎉`, files: [attachment] });
 });
 
-client.login(TOKEN);
+// السطر الأخير لتسجيل الدخول
+client.login(process.env.TOKEN);
