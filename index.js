@@ -32,30 +32,36 @@ client.on('guildMemberAdd', async member => {
         const background = await Canvas.loadImage('./welcame.png');
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-        // 🌟 المقاسات عشان تلاحظ الفرق بعينك (يسار أكثر) 🌟
-        const avatarSize = 90; 
-        const avatarX = 270;    // دفيناها يسار بزيادة عشان يبين الفرق
-        const avatarY = 20;    
+        // 🌟 الإحداثيات والمقاسات الجديدة لتطابق الدائرة الزرقاء تماماً 🌟
+        const avatarSize = 135;   // تكبير حجم الصورة لتكون واضحة ومتناسقة
+        const avatarX = 245;      // دفع الصورة لليتموضع تحت بداية كلمة WELCOME
+        const avatarY = 160;      // إنزال الصورة لترسم في المساحة الفارغة تحت الكلام
 
-        // قص الدائرة
+        // حفظ حالة الكانفاس لتجنب المشاكل البرمجية عند القص
+        ctx.save();
+
+        // قص الدائرة بدقة هندسية
         const radius = avatarSize / 2;
         ctx.beginPath();
         ctx.arc(avatarX + radius, avatarY + radius, radius, 0, Math.PI * 2, true);
         ctx.closePath();
         ctx.clip();
 
-        // رسم صورة العضو بأعلى جودة
+        // رسم صورة العضو بأعلى جودة داخل الدائرة المقصوصة
         const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: 'png', size: 1024 }));
         ctx.drawImage(avatar, avatarX, avatarY, avatarSize, avatarSize);
 
-        // 🚨 الحل السحري لمشكلة تعليق الصورة في ديسكورد 🚨
+        // استعادة حالة الكانفاس الطبيعية
+        ctx.restore();
+
+        // التغليف والإرسال ل ديسكورد
         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `welcome-${Date.now()}.png` });
 
         await channel.send({ content: welcomeText, files: [attachment] });
         console.log(`📸 تم إرسال صورة الترحيب بنجاح لـ ${member.user.username}`);
 
     } catch (error) {
-        console.error('⚠️ حدث خطأ بسيط في تصميم الصورة:', error);
+        console.error('⚠️ حدث خطأ في تصميم الصورة:', error);
         await channel.send({ content: welcomeText });
     }
 });
