@@ -33,7 +33,7 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // 🌟 الإحداثيات والمقاسات الجديدة لتطابق الدائرة الزرقاء تماماً 🌟
-        const avatarSize = 135;   // تكبير حجم الصورة لتكون واضحة ومتناسقة
+        const avatarSize = 160;   // تكبير حجم الصورة لتكون واضحة ومتناسقة
         const avatarX = 245;      // دفع الصورة لليتموضع تحت بداية كلمة WELCOME
         const avatarY = 160;      // إنزال الصورة لترسم في المساحة الفارغة تحت الكلام
 
