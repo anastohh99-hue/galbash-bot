@@ -1,6 +1,8 @@
 const keepAlive = require('./keep_alive.js');
 const { Client, GatewayIntentBits, AttachmentBuilder } = require('discord.js');
 const Canvas = require('canvas');
+const GIFEncoder = require('gifencoder');
+const gifFrames = require('gif-frames');
 
 // الآيدي الخاص بروم الترحيب
 const WELCOME_CHANNEL_ID = '1505581496071753747';
@@ -14,54 +16,75 @@ const client = new Client({
 });
 
 client.on('ready', () => {
-    console.log(`✅ البوت جاهز ومسجل باسم ${client.user.tag}`);
+    console.log(`✅ البوت جاهز لإنشاء صور GIF الترحيبية!`);
 });
 
 client.on('guildMemberAdd', async member => {
-    console.log(`✅ في شخص دخل السيرفر واسمه: ${member.user.username}`);
+    console.log(`✅ جاري معالجة GIF للعضو: ${member.user.username}... (قد يستغرق بضع ثواني)`);
     const channel = member.guild.channels.cache.get(WELCOME_CHANNEL_ID);
     if (!channel) return;
 
     const welcomeText = `𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 Galbash | غلبش\n✦ ・  𝐌e𝐦𝐛𝐞𝐫 : <@${member.id}>\n✦ ・  𝐇𝐢𝐬 𝐍𝐮𝐦𝐛𝐞𝐫 : ${member.guild.memberCount}\n✦ ・  Rules : <#1505581491487375491>`;
 
     try {
+        // 1. تفكيك إطارات خلفية الـ GIF
+        const frames = await gifFrames({ url: './welcome.gif', frames: 'all', outputType: 'canvas', cumulative: true });
+
+        // 2. إعداد محرك الـ GIF بنفس مقاساتنا
+        const encoder = new GIFEncoder(800, 360);
+        encoder.start();
+        encoder.setRepeat(0);   // 0 يعني تكرار لا نهائي
+        encoder.setDelay(frames[0].frameInfo.delay * 10); // ضبط سرعة الحركة بناءً على الملف الأصلي
+        encoder.setQuality(10); // الجودة (رقم أقل يعني جودة أعلى)
+
         const canvas = Canvas.createCanvas(800, 360);
         const ctx = canvas.getContext('2d');
 
-        // رسم الخلفية
-        const background = await Canvas.loadImage('./welcame.png');
-        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+        // 🟢 المقاسات اللي ضبطناها مع بعض 🟢
+        const avatarSize = 160; 
+        const avatarX = 350;    
+        const avatarY = 120;    
 
-        // 🌟 الإحداثيات والمقاسات الجديدة لتطابق الدائرة الزرقاء تماماً 🌟
-        const avatarSize = 160;   // تكبير حجم الصورة لتكون واضحة ومتناسقة
-        const avatarX = 245;      // دفع الصورة لليتموضع تحت بداية كلمة WELCOME
-        const avatarY = 160;      // إنزال الصورة لترسم في المساحة الفارغة تحت الكلام
+        // 3. تحميل صورة العضو الدائرية
+        const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: 'png', size: 256 })); // قللنا حجم الأفاتار شوي عشان ما يعلق السيرفر
 
-        // حفظ حالة الكانفاس لتجنب المشاكل البرمجية عند القص
-        ctx.save();
+        // 4. دمج صورة العضو مع كل إطار من إطارات الـ GIF
+        for (let i = 0; i < frames.length; i++) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // قص الدائرة بدقة هندسية
-        const radius = avatarSize / 2;
-        ctx.beginPath();
-        ctx.arc(avatarX + radius, avatarY + radius, radius, 0, Math.PI * 2, true);
-        ctx.closePath();
-        ctx.clip();
+            // رسم إطار الخلفية
+            ctx.drawImage(frames[i].getImage(), 0, 0, canvas.width, canvas.height);
 
-        // رسم صورة العضو بأعلى جودة داخل الدائرة المقصوصة
-        const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: 'png', size: 1024 }));
-        ctx.drawImage(avatar, avatarX, avatarY, avatarSize, avatarSize);
+            // حفظ حالة الرسم قبل القص
+            ctx.save();
 
-        // استعادة حالة الكانفاس الطبيعية
-        ctx.restore();
+            // قص الدائرة
+            const radius = avatarSize / 2;
+            ctx.beginPath();
+            ctx.arc(avatarX + radius, avatarY + radius, radius, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.clip();
 
-        // التغليف والإرسال ل ديسكورد
-        const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `welcome-${Date.now()}.png` });
+            // رسم صورة العضو
+            ctx.drawImage(avatar, avatarX, avatarY, avatarSize, avatarSize);
 
+            // استعادة حالة الرسم عشان ما يقص الإطار اللي بعده
+            ctx.restore();
+
+            // إضافة الإطار النهائي لملف الـ GIF الجديد
+            encoder.addFrame(ctx);
+        }
+
+        encoder.finish(); // إنهاء تجميع الـ GIF
+
+        // 5. إرسال الـ GIF النهائي للديسكورد
+        const attachment = new AttachmentBuilder(encoder.out.getData(), { name: `welcome-${Date.now()}.gif` });
+        
         await channel.send({ content: welcomeText, files: [attachment] });
-        console.log(`📸 تم إرسال صورة الترحيب بنجاح لـ ${member.user.username}`);
+        console.log(`📸 تم إرسال الـ GIF بنجاح لـ ${member.user.username}`);
 
     } catch (error) {
-        console.error('⚠️ حدث خطأ في تصميم الصورة:', error);
+        console.error('⚠️ حدث خطأ أثناء معالجة الـ GIF:', error);
         await channel.send({ content: welcomeText });
     }
 });
