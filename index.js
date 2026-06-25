@@ -51,8 +51,8 @@ client.on('guildMemberAdd', async member => {
 
         // إعداد الخط (استخدمنا sans-serif للابتعاد عن مشاكل الملفات)
         ctx.fillStyle = '#0c221d'; 
-        ctx.font = '40px sans-serif'; // هنا تقدر تتحكم بحجم الخط مباشرة
-        ctx.textAlign = 'center'; 
+        // جرب هذا أولاً، إذا شفته لسا كبير، غير الـ 25 إلى 20
+        ctx.font = '25px sans-serif';        ctx.textAlign = 'center'; 
         ctx.textBaseline = 'middle'; 
 
         const textX = 660; 
