@@ -31,26 +31,23 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // ==========================================
-        // 1. إعدادات النصوص (حل مشكلة الـ 16px وسحب يمين)
+        // 1. إعدادات النصوص (تم إزالة القلتش الخبيث)
         // ==========================================
         ctx.fillStyle = '#0c221d'; 
         
-        // تغيير الخط إلى sans-serif حل مشكلة الثبات على 16px وحجم 46px ممتاز جداً للمساحة
-        ctx.font = 'bold 46px sans-serif'; 
+        // شلنا كلمة bold عشان السيرفر ما يعلق، وخلينا الحجم 60 ضخم وواضح
+        ctx.font = '60px sans-serif'; 
         
         ctx.textAlign = 'right'; 
         ctx.textBaseline = 'middle'; 
 
-        // سحبنا النص شوي يمين لتكون الكتابة متناسقة ومحاذية تماماً
         const textX = 725; 
         
-        // وزنية الارتفاع الصحيحة والمتطابقة مع المربعات
         const nameY = 220; 
         const nickY = 295; 
         const idY = 370;   
         const dateY = 445; 
 
-        // جلب البيانات الصحيحة
         const memberName = member.user.username; 
         const memberNick = member.nickname || member.user.globalName || 'بدون لقب'; 
         const memberId = `GALB - ${member.guild.memberCount}`; 
@@ -67,11 +64,14 @@ client.on('guildMemberAdd', async member => {
         ctx.fillText(hijriDate, textX, dateY);
 
         // ==========================================
-        // 2. إعدادات الأفاتار (تصغير 1% وتنزيل شوي بس)
+        // 2. إعدادات الأفاتار (شرح التحكم)
         // ==========================================
-        const avatarSize = 336; // تم التصغير 1% من الحجم السابق
-        const avatarX = 67;     // موازنة المحور الأفقي بعد التصغير
-        const avatarY = 195;    // تم تنزيلها شوي بس (من 180 إلى 195) لتأتي في المنتصف تماماً
+        const avatarSize = 336; 
+        const avatarX = 67;     
+        
+        // 👇 هنا سر التنزيل والرفع! زدت الرقم لـ 225 عشان تنزل الصورة تحت
+        // (إذا تبي تنزلها زيادة خلها 240.. وإذا تبي ترفعها خلها 210)
+        const avatarY = 225;    
 
         const avatarURL = member.user.displayAvatarURL({ extension: 'png', size: 512 });
         const avatar = await Canvas.loadImage(avatarURL);
