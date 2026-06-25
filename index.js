@@ -31,29 +31,26 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // ==========================================
-        // 1. إعدادات النصوص 
+        // 1. إعدادات النصوص (اختبار القلتش!)
         // ==========================================
         ctx.fillStyle = '#0c221d'; 
-        // تم تكبير الخط لـ 80 بكسل عشان يكون ضخم وواضح!
-        ctx.font = 'bold 80px Arial'; 
+        
+        // خط عملاق جداً عشان نكتشف القلتش (120 بكسل)
+        ctx.font = 'bold 120px Arial'; 
         
         ctx.textAlign = 'right'; 
         ctx.textBaseline = 'middle'; 
 
-        // تم سحب النص لليمين شوي حسب طلبك
         const textX = 700; 
         
-        const nameY = 215; 
-        const nickY = 290; 
-        const idY = 365;   
-        const dateY = 440; 
+        // رفعت لك الخطوط لفوق بشكل ملحوظ جداً
+        const nameY = 120; 
+        const nickY = 240; 
+        const idY = 360;   
+        const dateY = 480; 
 
-        // الاسم = اليوزر الأساسي
         const memberName = member.user.username; 
-        
-        // اللقب = لقبه بالسيرفر أو اسم العرض
         const memberNick = member.nickname || member.user.globalName || 'بدون لقب'; 
-        
         const memberId = `GALB - ${member.guild.memberCount}`; 
         
         const hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', {
@@ -68,12 +65,12 @@ client.on('guildMemberAdd', async member => {
         ctx.fillText(hijriDate, textX, dateY);
 
         // ==========================================
-        // 2. إعدادات الأفاتار 
+        // 2. إعدادات الأفاتار (رفعناها فوق)
         // ==========================================
         const avatarSize = 340; 
         const avatarX = 65;     
-        // تم رفع الصورة شوي لفوق (245 بدلاً من 260)
-        const avatarY = 245;    
+        // رفعنا الصورة لفوق بشكل ملحوظ (180 بدلاً من 245)
+        const avatarY = 180;    
 
         const avatarURL = member.user.displayAvatarURL({ extension: 'png', size: 512 });
         const avatar = await Canvas.loadImage(avatarURL);
