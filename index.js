@@ -2,7 +2,7 @@ const keepAlive = require('./keep_alive.js');
 const { Client, GatewayIntentBits, AttachmentBuilder } = require('discord.js');
 const Canvas = require('canvas');
 
-// تسجيل الخط باسم بسيط جداً
+// تسجيل الخط (تأكد إن الملف الجديد اسمه font.ttf بالضبط)
 Canvas.registerFont('./font.ttf', { family: 'Galbash' });
 
 const WELCOME_CHANNEL_ID = '1505581496071753747';
@@ -38,17 +38,15 @@ client.on('guildMemberAdd', async member => {
         // ==========================================
         ctx.fillStyle = '#0c221d'; 
         
-        // السطر السحري بدون أي علامات تنصيص داخلية (الحجم 50 وتقدر تكبره لـ 60 أو 70 براحتك)
-        ctx.font = '50px Galbash'; 
+        // 👇 التعديل السحري: حطينا علامات تنصيص لاسم خطنا، وضفنا sans-serif كداعم عشان يثبت الحجم على 50px مهما صار!
+        ctx.font = '50px "Galbash", sans-serif'; 
         
-        // سطر اختبار للتأكد أن السيرفر قبل الحجم الجديد
         console.log(`[DEBUG] تم اعتماد الخط بحجم: ${ctx.font}`);
         
         ctx.textAlign = 'right'; 
         ctx.textBaseline = 'middle'; 
 
         const textX = 725; 
-        
         const nameY = 220; 
         const nickY = 295; 
         const idY = 370;   
@@ -70,7 +68,7 @@ client.on('guildMemberAdd', async member => {
         ctx.fillText(hijriDate, textX, dateY);
 
         // ==========================================
-        // 2. إعدادات الأفاتار (ثابتة وموزونة)
+        // 2. إعدادات الأفاتار 
         // ==========================================
         const avatarSize = 332; 
         const avatarX = 67;     
