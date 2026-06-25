@@ -68,8 +68,8 @@ client.on('guildMemberAdd', async member => {
         // 2. إعدادات الأفاتار (تصغير الحجم 1%)
         // ==========================================
         // 👇 من هنا تتحكم بحجم الصورة، خليته 332 عشان يصغر نتفة (1%)
-        const avatarSize = 310; 
-        const avatarX = 70;     
+        const avatarSize = 332; 
+        const avatarX = 67;     
         const avatarY = 225;    
 
         const avatarURL = member.user.displayAvatarURL({ extension: 'png', size: 512 });
