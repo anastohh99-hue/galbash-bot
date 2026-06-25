@@ -10,7 +10,7 @@ if (process.env.OPENAI_API_KEY) {
     openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     console.log("✅ نظام الـ AI Moderation مفعل.");
 } else {
-    console.warn("⚠️ تنبيه: OPENAI_API_KEY غير موجود! الفلتر الذكي معطل.");
+    console.warn("⚠️ تنبيه: لم يتم العثور على OPENAI_API_KEY. الفلتر الذكي سيكون معطلاً.");
 }
 
 const LOGS = {
@@ -38,7 +38,7 @@ async function sendLog(channelId, message) {
     if (channel) channel.send(message).catch(console.error);
 }
 
-client.once('ready', () => console.log(`✅ البوت شغال والمدينة في حماية تامة!`));
+client.once('ready', () => console.log(`✅ البوت شغال والمدينة في حماية تامة يا غلبش!`));
 
 // --- 1. نظام الترحيب ---
 client.on('guildMemberAdd', async member => {
@@ -52,9 +52,9 @@ client.on('guildMemberAdd', async member => {
         const background = await Canvas.loadImage('./welcome_2.jpg');
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-        // إعدادات الخط (حجم مضبوط)
+        // إعدادات الخط (حجم 22px مضبوط)
         ctx.fillStyle = '#0c221d'; 
-        ctx.font = '35px sans-serif'; 
+        ctx.font = '22px sans-serif'; 
         ctx.textAlign = 'center'; 
         ctx.textBaseline = 'middle'; 
 
