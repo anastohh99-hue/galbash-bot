@@ -35,16 +35,21 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // ==========================================
-        // 1. إعدادات النصوص (الحل النووي)
+        // 1. إعدادات النصوص 
         // ==========================================
         ctx.fillStyle = '#0c221d'; 
         
-        // نخلي السيرفر يستخدم خط آمن جداً ومقاس 20 (اللي هو راضي فيه وما يعلق عليه)
         ctx.font = '20px "Galbash", sans-serif'; 
-        ctx.textAlign = 'right'; 
+        
+        // المحاذاة للمنتصف عشان يكون النص مسنتر فوق كلمة الغلابيش
+        ctx.textAlign = 'center'; 
         ctx.textBaseline = 'middle'; 
 
-        const textX = 725; 
+        // المحور X ثابت لجميع النصوص (620 هو المنتصف تقريباً فوق الكلمة)
+        // إذا حسيتها مايلة يمين أو يسار نتفة، تقدر تغير الـ 620
+        const textX = 620; 
+        
+        // الـ Y لكل خانة
         const nameY = 220; 
         const nickY = 295; 
         const idY = 370;   
@@ -60,27 +65,24 @@ client.on('guildMemberAdd', async member => {
             year: 'numeric'
         }).format(new Date());
 
-        // 👇 هنا السحر: هذي دالة تسحب الكلمة وتضرب حجمها بالرقم اللي نبيه!
         function drawMassiveText(text, x, y, scaleNum) {
             ctx.save();
-            ctx.translate(x, y); // النقل لمكان النص
-            ctx.scale(scaleNum, scaleNum); // ضرب الحجم (التكبير الإجباري)
-            ctx.fillText(text, 0, 0); // رسم النص بعد التكبير
+            ctx.translate(x, y); 
+            ctx.scale(scaleNum, scaleNum); 
+            ctx.fillText(text, 0, 0); 
             ctx.restore();
         }
 
-        // رقم التكبير (3.5 يعني الخط بيكبر 3 أضعاف ونص)
-        // إذا شفته صار كبيير بزيادة، خله 2.5.. وإذا تبيه ينفجر خله 5!
-        const scaleFactor = 3.5; 
+        // 👇 صغرنا العدسة لـ 2.2 عشان يطابق خط "مدينة الغلابيش" بالملي
+        const scaleFactor = 2.2; 
 
-        // تطبيق دالة التكبير على كل سطر
         drawMassiveText(memberName, textX, nameY, scaleFactor);
         drawMassiveText(memberNick, textX, nickY, scaleFactor);
         drawMassiveText(memberId, textX, idY, scaleFactor);
         drawMassiveText(hijriDate, textX, dateY, scaleFactor);
 
         // ==========================================
-        // 2. إعدادات الأفاتار (موزونة وجاهزة)
+        // 2. إعدادات الأفاتار (ثابتة 100%)
         // ==========================================
         const avatarSize = 332; 
         const avatarX = 67;     
