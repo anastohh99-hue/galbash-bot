@@ -34,23 +34,24 @@ client.on('guildMemberAdd', async member => {
         // 1. إعدادات النصوص 
         // ==========================================
         ctx.fillStyle = '#0c221d'; 
-        ctx.font = 'bold 65px Arial'; // تم التكبير لـ 65
+        // تم تكبير الخط لـ 80 بكسل عشان يكون ضخم وواضح!
+        ctx.font = 'bold 80px Arial'; 
         
         ctx.textAlign = 'right'; 
         ctx.textBaseline = 'middle'; 
 
-        const textX = 660; // مسنترة فوق "مدينة الغلابيش"
+        // تم سحب النص لليمين شوي حسب طلبك
+        const textX = 700; 
         
         const nameY = 215; 
         const nickY = 290; 
         const idY = 365;   
         const dateY = 440; 
 
-        // التعديل الجذري للأسماء:
-        // الاسم = اليوزر الأساسي للحساب (مثال: mome_124)
+        // الاسم = اليوزر الأساسي
         const memberName = member.user.username; 
         
-        // اللقب = لقبه بالسيرفر أو اسم العرض (مثال: BHM)
+        // اللقب = لقبه بالسيرفر أو اسم العرض
         const memberNick = member.nickname || member.user.globalName || 'بدون لقب'; 
         
         const memberId = `GALB - ${member.guild.memberCount}`; 
@@ -67,12 +68,12 @@ client.on('guildMemberAdd', async member => {
         ctx.fillText(hijriDate, textX, dateY);
 
         // ==========================================
-        // 2. إعدادات الأفاتار (تم تنزيلها بشكل ملحوظ)
+        // 2. إعدادات الأفاتار 
         // ==========================================
         const avatarSize = 340; 
         const avatarX = 65;     
-        // نزلنا الـ Y من 230 إلى 260 عشان تنزل الصورة تحت بشكل واضح
-        const avatarY = 260;    
+        // تم رفع الصورة شوي لفوق (245 بدلاً من 260)
+        const avatarY = 245;    
 
         const avatarURL = member.user.displayAvatarURL({ extension: 'png', size: 512 });
         const avatar = await Canvas.loadImage(avatarURL);
