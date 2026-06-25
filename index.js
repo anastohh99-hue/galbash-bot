@@ -1,8 +1,6 @@
 const keepAlive = require('./keep_alive.js');
 const { Client, GatewayIntentBits, AttachmentBuilder } = require('discord.js');
 const Canvas = require('canvas');
-const GIFEncoder = require('gifencoder');
-const gifFrames = require('gif-frames');
 
 const WELCOME_CHANNEL_ID = '1505581496071753747';
 
@@ -14,81 +12,70 @@ const client = new Client({
     ]
 });
 
-// 🛠️ دالة جديدة لتحويل بيانات الـ GIF إلى صورة يفهمها السيرفر
-async function streamToBuffer(stream) {
-    return new Promise((resolve, reject) => {
-        const chunks = [];
-        stream.on('data', chunk => chunks.push(chunk));
-        stream.on('end', () => resolve(Buffer.concat(chunks)));
-        stream.on('error', reject);
-    });
-}
+// 🎲 قائمة الرتب العشوائية اللي تبيها تظهر داخل الصورة
+const randomRanks = [
+    "الرتبة: أسطوري 👑",
+    "الرتبة: محترف ⚔️",
+    "الرتبة: نادر 💎",
+    "الرتبة: ملحمي 🐉",
+    "الرتبة: مبتدئ 🐣"
+];
 
 client.on('ready', () => {
-    console.log(`✅ البوت جاهز لإنشاء صور GIF الترحيبية!`);
+    console.log(`✅ البوت جاهز لإنشاء صور الترحيب السريعة!`);
 });
 
 client.on('guildMemberAdd', async member => {
-    console.log(`✅ جاري معالجة GIF للعضو: ${member.user.username}... (قد يستغرق بضع ثواني)`);
+    console.log(`✅ جاري معالجة الصورة للعضو: ${member.user.username}...`);
     const channel = member.guild.channels.cache.get(WELCOME_CHANNEL_ID);
     if (!channel) return;
 
     const welcomeText = `𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 Galbash | غلبش\n✦ ・  𝐌e𝐦𝐛𝐞𝐫 : <@${member.id}>\n✦ ・  𝐇𝐢𝐬 𝐍𝐮𝐦𝐛𝐞𝐫 : ${member.guild.memberCount}\n✦ ・  Rules : <#1505581491487375491>`;
 
     try {
-        // 1. تفكيك الـ GIF باستخدام صيغة PNG بدل المتصفح
-        const frames = await gifFrames({ url: './welcome.gif', frames: 'all', outputType: 'png', cumulative: true });
+        // 1. اختيار رتبة عشوائية من القائمة
+        const randomRank = randomRanks[Math.floor(Math.random() * randomRanks.length)];
 
-        // 2. إعداد محرك الـ GIF
-        const encoder = new GIFEncoder(800, 360);
-        encoder.start();
-        encoder.setRepeat(0);
-        encoder.setDelay(frames[0].frameInfo.delay * 10);
-        encoder.setQuality(10);
-
+        // 2. إعداد لوحة الرسم (نفس مقاساتك القديمة)
         const canvas = Canvas.createCanvas(800, 360);
         const ctx = canvas.getContext('2d');
 
-        // المقاسات
+        // 3. تحميل صورة الخلفية الثابتة (لازم يكون عندك ملف اسمه welcome.png)
+        const background = await Canvas.loadImage('./welcome.png');
+        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+        // 4. كتابة الرتبة العشوائية "داخل" الصورة
+        ctx.font = 'bold 35px Arial'; // نوع وحجم الخط
+        ctx.fillStyle = '#ffffff'; // لون الخط (أبيض)
+        ctx.textAlign = 'center'; // توسيط النص
+        // الأرقام هنا (400, 320) هي مكان النص (X, Y) وتقدر تعدلها عشان تناسب تصميمك
+        ctx.fillText(randomRank, 400, 320); 
+
+        // 5. رسم صورة العضو الدائرية (نفس إعداداتك اللي وزنتها أنت)
         const avatarSize = 160; 
         const avatarX = 350;    
         const avatarY = 120;    
 
-        const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: 'png', size: 256 }));
+        const avatarURL = member.user.displayAvatarURL({ extension: 'png', size: 256 });
+        const avatar = await Canvas.loadImage(avatarURL);
 
-        // 3. دمج صورة العضو مع كل إطار
-        for (let i = 0; i < frames.length; i++) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        const radius = avatarSize / 2;
+        ctx.beginPath();
+        ctx.arc(avatarX + radius, avatarY + radius, radius, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.clip();
+        ctx.drawImage(avatar, avatarX, avatarY, avatarSize, avatarSize);
+        ctx.restore();
 
-            // تحويل الإطار لصورة قابلة للرسم
-            const frameBuffer = await streamToBuffer(frames[i].getImage());
-            const frameImage = await Canvas.loadImage(frameBuffer);
-
-            ctx.drawImage(frameImage, 0, 0, canvas.width, canvas.height);
-
-            ctx.save();
-            const radius = avatarSize / 2;
-            ctx.beginPath();
-            ctx.arc(avatarX + radius, avatarY + radius, radius, 0, Math.PI * 2, true);
-            ctx.closePath();
-            ctx.clip();
-            ctx.drawImage(avatar, avatarX, avatarY, avatarSize, avatarSize);
-            ctx.restore();
-
-            encoder.addFrame(ctx);
-        }
-
-        encoder.finish();
-
-        // 4. إرسال الصورة للديسكورد
-        const attachment = new AttachmentBuilder(encoder.out.getData(), { name: `welcome-${Date.now()}.gif` });
+        // 6. إرسال الصورة للديسكورد
+        const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `welcome-${Date.now()}.png` });
         
         await channel.send({ content: welcomeText, files: [attachment] });
-        console.log(`📸 تم إرسال الـ GIF بنجاح لـ ${member.user.username}`);
+        console.log(`📸 تم إرسال الصورة بنجاح لـ ${member.user.username}`);
 
     } catch (error) {
-        console.error('⚠️ حدث خطأ أثناء معالجة الـ GIF:', error);
-        // يرسل رسالة نصية لو فشل التصميم
+        console.error('⚠️ حدث خطأ أثناء معالجة الصورة:', error);
         await channel.send({ content: welcomeText });
     }
 });
