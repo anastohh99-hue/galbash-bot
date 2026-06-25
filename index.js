@@ -41,15 +41,13 @@ client.on('guildMemberAdd', async member => {
         
         ctx.font = '20px "Galbash", sans-serif'; 
         
-        // المحاذاة للمنتصف عشان يكون النص مسنتر فوق كلمة الغلابيش
+        // المحاذاة للمنتصف 
         ctx.textAlign = 'center'; 
         ctx.textBaseline = 'middle'; 
 
-        // المحور X ثابت لجميع النصوص (620 هو المنتصف تقريباً فوق الكلمة)
-        // إذا حسيتها مايلة يمين أو يسار نتفة، تقدر تغير الـ 620
-        const textX = 620; 
+        // 👇 التعديل هنا: سحبنا النص لليمين (من 620 إلى 660) عشان يسنتر فوق الكلمة بالضبط
+        const textX = 660; 
         
-        // الـ Y لكل خانة
         const nameY = 220; 
         const nickY = 295; 
         const idY = 370;   
@@ -73,7 +71,6 @@ client.on('guildMemberAdd', async member => {
             ctx.restore();
         }
 
-        // 👇 صغرنا العدسة لـ 2.2 عشان يطابق خط "مدينة الغلابيش" بالملي
         const scaleFactor = 2.2; 
 
         drawMassiveText(memberName, textX, nameY, scaleFactor);
@@ -82,7 +79,7 @@ client.on('guildMemberAdd', async member => {
         drawMassiveText(hijriDate, textX, dateY, scaleFactor);
 
         // ==========================================
-        // 2. إعدادات الأفاتار (ثابتة 100%)
+        // 2. إعدادات الأفاتار 
         // ==========================================
         const avatarSize = 332; 
         const avatarX = 67;     
