@@ -1,11 +1,7 @@
 {
   "name": "galbash-bot",
   "version": "1.0.0",
-  "description": "Discord Welcome Bot",
   "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
   "dependencies": {
     "canvas": "^3.2.3",
     "discord.js": "^14.26.4",
