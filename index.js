@@ -31,19 +31,19 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // ==========================================
-        // 1. إعدادات النصوص (تكبير الخط ونقله ليمين المربعات)
+        // 1. إعدادات النصوص (تكبير الخط ومحاذاته مع مدينة الغلابيش)
         // ==========================================
         ctx.fillStyle = '#0c221d'; 
-        ctx.font = 'bold 45px Arial'; // تم تكبير الخط بشكل ممتاز
+        ctx.font = 'bold 55px Arial'; // تم تكبير الخط بشكل ملحوظ (55 بكسل)
         
-        // المحاذاة لليمين، عشان النص يبدأ من قبل صندوق القوانين ويمتد لجهة المربعات
-        ctx.textAlign = 'right'; 
-        ctx.textBaseline = 'middle'; // يخلي النص يتوسط المربع بالضبط من فوق وتحت
+        ctx.textAlign = 'right'; // النص يبدأ من النقطة المحددة ويرجع لليسار
+        ctx.textBaseline = 'middle'; 
 
-        // تم نقل الـ X إلى 860 (يمين المربعات الغامقة تماماً، في المساحة الفاضية)
-        const textX = 860; 
+        // تم ضبط الـ X ليكون فوق كلمة "مدينة الغلابيش" بالضبط
+        // قللنا الرقم عشان يسحب النص لليسار ويكون متناسق
+        const textX = 660; 
         
-        // وزنية الـ Y لتتطابق مع منتصف كل مربع غامق بالملي
+        // وزنية الـ Y للمربعات
         const nameY = 215; 
         const nickY = 290; 
         const idY = 365;   
@@ -60,18 +60,18 @@ client.on('guildMemberAdd', async member => {
             year: 'numeric'
         }).format(new Date());
 
-        // طباعة النصوص في مكانها الجديد
+        // طباعة النصوص
         ctx.fillText(memberName, textX, nameY);
         ctx.fillText(memberNick, textX, nickY);
         ctx.fillText(memberId, textX, idY);
         ctx.fillText(hijriDate, textX, dateY);
 
         // ==========================================
-        // 2. إعدادات الأفاتار (تم تكبيرها ومطابقتها للدائرة الذهبية)
+        // 2. إعدادات الأفاتار (تكبير وتنزيل للأسفل)
         // ==========================================
-        const avatarSize = 320; // كبرناها عشان تعبي الدائرة الذهبية بالكامل
-        const avatarX = 75;     // سحبناها لليسار لتتوسط الإطار
-        const avatarY = 205;    // رفعناها لفوق عشان تغطي الفراغ
+        const avatarSize = 340; // كبرناها زيادة عشان تعبي الإطار الذهبي
+        const avatarX = 65;     // وزن يسار ويمين
+        const avatarY = 230;    // نزلناها لتحت عشان تتطابق مع الدائرة
 
         const avatarURL = member.user.displayAvatarURL({ extension: 'png', size: 512 });
         const avatar = await Canvas.loadImage(avatarURL);
