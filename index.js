@@ -2,6 +2,9 @@ const keepAlive = require('./keep_alive.js');
 const { Client, GatewayIntentBits, AttachmentBuilder } = require('discord.js');
 const Canvas = require('canvas');
 
+// 👇 الضربة القاضية: هنا نغصب البوت يقرأ ملف الخط حقنا
+Canvas.registerFont('./font.ttf', { family: 'GalbashFont' });
+
 const WELCOME_CHANNEL_ID = '1505581496071753747';
 
 const client = new Client({
@@ -31,13 +34,12 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // ==========================================
-        // 1. إعدادات النصوص (تم إجبار السيرفر على خط مدعوم)
+        // 1. إعدادات النصوص 
         // ==========================================
         ctx.fillStyle = '#0c221d'; 
         
-        // استخدمنا خط DejaVu Sans لأنه المدعوم الوحيد في سيرفرات لينكس بدون مشاكل
-        // وحطينا الحجم 80px عشان يكون فخم ومالي مكانه
-        ctx.font = '80px "DejaVu Sans", sans-serif'; 
+        // 👇 هنا نستخدم الخط اللي سجلناه فوق، والحجم 50 بكسل (قابل للتعديل براحتك الحين!)
+        ctx.font = '50px "GalbashFont"'; 
         
         ctx.textAlign = 'right'; 
         ctx.textBaseline = 'middle'; 
@@ -65,9 +67,8 @@ client.on('guildMemberAdd', async member => {
         ctx.fillText(hijriDate, textX, dateY);
 
         // ==========================================
-        // 2. إعدادات الأفاتار (تصغير الحجم 1%)
+        // 2. إعدادات الأفاتار (مضبوطة ومقفل عليها)
         // ==========================================
-        // 👇 من هنا تتحكم بحجم الصورة، خليته 332 عشان يصغر نتفة (1%)
         const avatarSize = 332; 
         const avatarX = 67;     
         const avatarY = 225;    
