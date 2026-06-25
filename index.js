@@ -24,26 +24,21 @@ client.on('guildMemberAdd', async member => {
     const welcomeText = `𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 Galbash | غلبش\n✦ ・  𝐌e𝐦𝐛𝐞𝐫 : <@${member.id}>\n✦ ・  𝐇𝐢𝐬 𝐍𝐮𝐦𝐛𝐞𝐫 : ${member.guild.memberCount}\n✦ ・  Rules : <#1505581491487375491>`;
 
     try {
+        console.log(`[DEBUG] 1. جاري إعداد لوحة الرسم (Canvas)...`);
         const canvas = Canvas.createCanvas(1280, 720); 
         const ctx = canvas.getContext('2d');
 
+        console.log(`[DEBUG] 2. جاري تحميل صورة الخلفية المحلية...`);
         const background = await Canvas.loadImage('./welcome_2.jpg');
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-        // ==========================================
-        // 1. إعدادات النصوص (اختبار القلتش!)
-        // ==========================================
+        console.log(`[DEBUG] 3. جاري كتابة النصوص...`);
         ctx.fillStyle = '#0c221d'; 
-        
-        // خط عملاق جداً عشان نكتشف القلتش (120 بكسل)
         ctx.font = 'bold 120px Arial'; 
-        
         ctx.textAlign = 'right'; 
         ctx.textBaseline = 'middle'; 
 
         const textX = 700; 
-        
-        // رفعت لك الخطوط لفوق بشكل ملحوظ جداً
         const nameY = 120; 
         const nickY = 240; 
         const idY = 360;   
@@ -64,17 +59,15 @@ client.on('guildMemberAdd', async member => {
         ctx.fillText(memberId, textX, idY);
         ctx.fillText(hijriDate, textX, dateY);
 
-        // ==========================================
-        // 2. إعدادات الأفاتار (رفعناها فوق)
-        // ==========================================
+        console.log(`[DEBUG] 4. جاري جلب صورة الأفاتار من سيرفرات ديسكورد...`);
         const avatarSize = 340; 
         const avatarX = 65;     
-        // رفعنا الصورة لفوق بشكل ملحوظ (180 بدلاً من 245)
         const avatarY = 180;    
 
         const avatarURL = member.user.displayAvatarURL({ extension: 'png', size: 512 });
         const avatar = await Canvas.loadImage(avatarURL);
 
+        console.log(`[DEBUG] 5. جاري دمج الأفاتار في اللوحة...`);
         ctx.save();
         const radius = avatarSize / 2;
         ctx.beginPath();
@@ -84,6 +77,7 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(avatar, avatarX, avatarY, avatarSize, avatarSize);
         ctx.restore();
 
+        console.log(`[DEBUG] 6. جاري تحويل اللوحة وإرسالها لروم الترحيب...`);
         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `iqama-${Date.now()}.jpg` });
         
         await channel.send({ content: welcomeText, files: [attachment] });
