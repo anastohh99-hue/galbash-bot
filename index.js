@@ -8,6 +8,9 @@ const { OpenAI } = require('openai');
 let openai = null;
 if (process.env.OPENAI_API_KEY) {
     openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    console.log("✅ نظام الـ AI Moderation مفعل.");
+} else {
+    console.warn("⚠️ تنبيه: OPENAI_API_KEY غير موجود! الفلتر الذكي معطل.");
 }
 
 const LOGS = {
@@ -35,9 +38,9 @@ async function sendLog(channelId, message) {
     if (channel) channel.send(message).catch(console.error);
 }
 
-client.once('clientReady', () => console.log(`✅ البوت شغال والمدينة في حماية تامة!`));
+client.once('ready', () => console.log(`✅ البوت شغال والمدينة في حماية تامة!`));
 
-// --- نظام الترحيب (بدون ملفات خارجية) ---
+// --- 1. نظام الترحيب ---
 client.on('guildMemberAdd', async member => {
     sendLog(LOGS.JOINS, `📥 **دخول:** ${member.user.tag}`);
     const channel = member.guild.channels.cache.get(LOGS.WELCOME);
@@ -49,10 +52,10 @@ client.on('guildMemberAdd', async member => {
         const background = await Canvas.loadImage('./welcome_2.jpg');
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-        // إعداد الخط (استخدمنا sans-serif للابتعاد عن مشاكل الملفات)
+        // إعدادات الخط (حجم مضبوط)
         ctx.fillStyle = '#0c221d'; 
-        // جرب هذا أولاً، إذا شفته لسا كبير، غير الـ 25 إلى 20
-        ctx.font = '25px sans-serif';        ctx.textAlign = 'center'; 
+        ctx.font = '35px sans-serif'; 
+        ctx.textAlign = 'center'; 
         ctx.textBaseline = 'middle'; 
 
         const textX = 660; 
@@ -66,7 +69,6 @@ client.on('guildMemberAdd', async member => {
             day: 'numeric', month: 'long', year: 'numeric'
         }).format(new Date());
 
-        // طباعة النصوص مباشرة (بدون ضرب في 2.2)
         ctx.fillText(memberName, textX, nameY);
         ctx.fillText(memberNick, textX, nickY);
         ctx.fillText(memberId, textX, idY);
@@ -90,6 +92,30 @@ client.on('guildMemberAdd', async member => {
     } catch (error) { console.error('⚠️ خطأ في الترحيب:', error); }
 });
 
-// ... (نظام المراقبة والفلتر كما هو)
+// --- 2. نظام المراقبة ---
+client.on('guildMemberRemove', member => sendLog(LOGS.JOINS, `📤 **خروج:** ${member.user.tag}`));
+client.on('guildBanAdd', ban => sendLog(LOGS.BAN, `🔨 **باند:** ${ban.user.tag}`));
+client.on('messageDelete', msg => sendLog(LOGS.DELETES, `🗑️ **حذف:** رسالة من ${msg.author?.tag}`));
+
+client.on('guildMemberUpdate', (oldMember, newMember) => {
+    if (oldMember.communicationDisabledUntilTimestamp !== newMember.communicationDisabledUntilTimestamp) {
+        if (newMember.isCommunicationDisabled()) sendLog(LOGS.TIMEOUT, `⏱️ **تايم أوت:** ${newMember.user.tag}`);
+    }
+    if (oldMember.displayName !== newMember.displayName) sendLog(LOGS.NAMES, `📝 **تغيير اسم:** ${newMember.user.tag}`);
+});
+
+// --- 3. الفلتر الذكي ---
+client.on('messageCreate', async message => {
+    if (message.author.bot) return;
+    if (openai) {
+        try {
+            const moderation = await openai.moderations.create({ input: message.content });
+            if (moderation.results[0].flagged) {
+                message.delete();
+                sendLog(LOGS.FILTER, `🤬 **الفلتر الذكي:** تم حذف رسالة مخالفة من ${message.author.tag}`);
+            }
+        } catch (e) { console.error('AI Filter Error:', e); }
+    }
+});
 
 client.login(process.env.TOKEN);
