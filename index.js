@@ -2,8 +2,8 @@ const keepAlive = require('./keep_alive.js');
 const { Client, GatewayIntentBits, AttachmentBuilder } = require('discord.js');
 const Canvas = require('canvas');
 
-// 👇 الضربة القاضية: هنا نغصب البوت يقرأ ملف الخط حقنا
-Canvas.registerFont('./font.ttf', { family: 'GalbashFont' });
+// تسجيل الخط باسم بسيط جداً
+Canvas.registerFont('./font.ttf', { family: 'Galbash' });
 
 const WELCOME_CHANNEL_ID = '1505581496071753747';
 
@@ -34,12 +34,15 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // ==========================================
-        // 1. إعدادات النصوص 
+        // 1. إعدادات النصوص
         // ==========================================
         ctx.fillStyle = '#0c221d'; 
         
-        // 👇 هنا نستخدم الخط اللي سجلناه فوق، والحجم 50 بكسل (قابل للتعديل براحتك الحين!)
-        ctx.font = '50px "GalbashFont"'; 
+        // السطر السحري بدون أي علامات تنصيص داخلية (الحجم 50 وتقدر تكبره لـ 60 أو 70 براحتك)
+        ctx.font = '50px Galbash'; 
+        
+        // سطر اختبار للتأكد أن السيرفر قبل الحجم الجديد
+        console.log(`[DEBUG] تم اعتماد الخط بحجم: ${ctx.font}`);
         
         ctx.textAlign = 'right'; 
         ctx.textBaseline = 'middle'; 
@@ -67,7 +70,7 @@ client.on('guildMemberAdd', async member => {
         ctx.fillText(hijriDate, textX, dateY);
 
         // ==========================================
-        // 2. إعدادات الأفاتار (مضبوطة ومقفل عليها)
+        // 2. إعدادات الأفاتار (ثابتة وموزونة)
         // ==========================================
         const avatarSize = 332; 
         const avatarX = 67;     
