@@ -31,27 +31,28 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // ==========================================
-        // 1. إعدادات النصوص (تكبير الخط ومحاذاته مع مدينة الغلابيش)
+        // 1. إعدادات النصوص 
         // ==========================================
         ctx.fillStyle = '#0c221d'; 
-        ctx.font = 'bold 55px Arial'; // تم تكبير الخط بشكل ملحوظ (55 بكسل)
+        ctx.font = 'bold 65px Arial'; // تم التكبير لـ 65
         
-        ctx.textAlign = 'right'; // النص يبدأ من النقطة المحددة ويرجع لليسار
+        ctx.textAlign = 'right'; 
         ctx.textBaseline = 'middle'; 
 
-        // تم ضبط الـ X ليكون فوق كلمة "مدينة الغلابيش" بالضبط
-        // قللنا الرقم عشان يسحب النص لليسار ويكون متناسق
-        const textX = 660; 
+        const textX = 660; // مسنترة فوق "مدينة الغلابيش"
         
-        // وزنية الـ Y للمربعات
         const nameY = 215; 
         const nickY = 290; 
         const idY = 365;   
         const dateY = 440; 
 
-        // استخراج البيانات
-        const memberName = member.user.globalName || member.user.username; 
-        const memberNick = member.nickname || 'بدون لقب'; 
+        // التعديل الجذري للأسماء:
+        // الاسم = اليوزر الأساسي للحساب (مثال: mome_124)
+        const memberName = member.user.username; 
+        
+        // اللقب = لقبه بالسيرفر أو اسم العرض (مثال: BHM)
+        const memberNick = member.nickname || member.user.globalName || 'بدون لقب'; 
+        
         const memberId = `GALB - ${member.guild.memberCount}`; 
         
         const hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', {
@@ -60,18 +61,18 @@ client.on('guildMemberAdd', async member => {
             year: 'numeric'
         }).format(new Date());
 
-        // طباعة النصوص
         ctx.fillText(memberName, textX, nameY);
         ctx.fillText(memberNick, textX, nickY);
         ctx.fillText(memberId, textX, idY);
         ctx.fillText(hijriDate, textX, dateY);
 
         // ==========================================
-        // 2. إعدادات الأفاتار (تكبير وتنزيل للأسفل)
+        // 2. إعدادات الأفاتار (تم تنزيلها بشكل ملحوظ)
         // ==========================================
-        const avatarSize = 340; // كبرناها زيادة عشان تعبي الإطار الذهبي
-        const avatarX = 65;     // وزن يسار ويمين
-        const avatarY = 230;    // نزلناها لتحت عشان تتطابق مع الدائرة
+        const avatarSize = 340; 
+        const avatarX = 65;     
+        // نزلنا الـ Y من 230 إلى 260 عشان تنزل الصورة تحت بشكل واضح
+        const avatarY = 260;    
 
         const avatarURL = member.user.displayAvatarURL({ extension: 'png', size: 512 });
         const avatar = await Canvas.loadImage(avatarURL);
