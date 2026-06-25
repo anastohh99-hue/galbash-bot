@@ -31,12 +31,13 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // ==========================================
-        // 1. إعدادات النصوص (تم إزالة القلتش الخبيث)
+        // 1. إعدادات النصوص (تم إجبار السيرفر على خط مدعوم)
         // ==========================================
         ctx.fillStyle = '#0c221d'; 
         
-        // شلنا كلمة bold عشان السيرفر ما يعلق، وخلينا الحجم 60 ضخم وواضح
-        ctx.font = '60px sans-serif'; 
+        // استخدمنا خط DejaVu Sans لأنه المدعوم الوحيد في سيرفرات لينكس بدون مشاكل
+        // وحطينا الحجم 80px عشان يكون فخم ومالي مكانه
+        ctx.font = '80px "DejaVu Sans", sans-serif'; 
         
         ctx.textAlign = 'right'; 
         ctx.textBaseline = 'middle'; 
@@ -64,13 +65,11 @@ client.on('guildMemberAdd', async member => {
         ctx.fillText(hijriDate, textX, dateY);
 
         // ==========================================
-        // 2. إعدادات الأفاتار (شرح التحكم)
+        // 2. إعدادات الأفاتار (تصغير الحجم 1%)
         // ==========================================
-        const avatarSize = 336; 
+        // 👇 من هنا تتحكم بحجم الصورة، خليته 332 عشان يصغر نتفة (1%)
+        const avatarSize = 332; 
         const avatarX = 67;     
-        
-        // 👇 هنا سر التنزيل والرفع! زدت الرقم لـ 225 عشان تنزل الصورة تحت
-        // (إذا تبي تنزلها زيادة خلها 240.. وإذا تبي ترفعها خلها 210)
         const avatarY = 225;    
 
         const avatarURL = member.user.displayAvatarURL({ extension: 'png', size: 512 });
