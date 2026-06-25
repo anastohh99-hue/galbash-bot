@@ -31,20 +31,23 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // ==========================================
-        // 1. إعدادات النصوص (تم التكبير والتعديل)
+        // 1. إعدادات النصوص (تكبير الخط ونقله ليمين المربعات)
         // ==========================================
         ctx.fillStyle = '#0c221d'; 
-        ctx.font = 'bold 40px Arial'; // كبرت الخط لـ 40 عشان يكون أوضح
-        ctx.textAlign = 'right'; 
-
-        // تم سحب النص لليسار (465) عشان يبدأ من نهاية الخط المنقط ويمتد لجهة الصورة
-        const textX = 465; 
+        ctx.font = 'bold 45px Arial'; // تم تكبير الخط بشكل ممتاز
         
-        // تم تنزيل النصوص شعرة بسيطة عشان تتوسط الخط المنقط
-        const nameY = 230; 
-        const nickY = 305; 
-        const idY = 380;   
-        const dateY = 455; 
+        // المحاذاة لليمين، عشان النص يبدأ من قبل صندوق القوانين ويمتد لجهة المربعات
+        ctx.textAlign = 'right'; 
+        ctx.textBaseline = 'middle'; // يخلي النص يتوسط المربع بالضبط من فوق وتحت
+
+        // تم نقل الـ X إلى 860 (يمين المربعات الغامقة تماماً، في المساحة الفاضية)
+        const textX = 860; 
+        
+        // وزنية الـ Y لتتطابق مع منتصف كل مربع غامق بالملي
+        const nameY = 215; 
+        const nickY = 290; 
+        const idY = 365;   
+        const dateY = 440; 
 
         // استخراج البيانات
         const memberName = member.user.globalName || member.user.username; 
@@ -57,18 +60,18 @@ client.on('guildMemberAdd', async member => {
             year: 'numeric'
         }).format(new Date());
 
-        // طباعة النصوص
+        // طباعة النصوص في مكانها الجديد
         ctx.fillText(memberName, textX, nameY);
         ctx.fillText(memberNick, textX, nickY);
         ctx.fillText(memberId, textX, idY);
         ctx.fillText(hijriDate, textX, dateY);
 
         // ==========================================
-        // 2. إعدادات صورة العضو (تم تنزيلها وتعديل مقاسها)
+        // 2. إعدادات الأفاتار (تم تكبيرها ومطابقتها للدائرة الذهبية)
         // ==========================================
-        const avatarSize = 280; // صغرتها نتفة عشان ما تطلع بره الإطار
-        const avatarX = 95;     // سحبتها يمين نتفة للتوسيط
-        const avatarY = 225;    // نزلتها تحت عشان الفراغ اللي كان بالصورة القديمة
+        const avatarSize = 320; // كبرناها عشان تعبي الدائرة الذهبية بالكامل
+        const avatarX = 75;     // سحبناها لليسار لتتوسط الإطار
+        const avatarY = 205;    // رفعناها لفوق عشان تغطي الفراغ
 
         const avatarURL = member.user.displayAvatarURL({ extension: 'png', size: 512 });
         const avatar = await Canvas.loadImage(avatarURL);
