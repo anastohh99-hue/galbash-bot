@@ -4,11 +4,23 @@ const { Client, GatewayIntentBits, AttachmentBuilder } = require('discord.js');
 const Canvas = require('canvas');
 const { OpenAI } = require('openai');
 
-// إعدادات الـ AI (تأكد من وجود مفتاح API في البيئة)
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// --- التعديل الجذري هنا ---
+let openai = null;
+try {
+    if (process.env.OPENAI_API_KEY) {
+        openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+        console.log("✅ نظام الـ AI Moderation مفعل.");
+    } else {
+        console.warn("⚠️ تنبيه: لم يتم العثور على OPENAI_API_KEY. الفلتر الذكي سيكون معطلاً.");
+    }
+} catch (error) {
+    console.error("⚠️ فشل في إعداد OpenAI:", error.message);
+}
+// -------------------------
 
 const fontPath = path.join(__dirname, 'font.ttf');
 Canvas.registerFont(fontPath, { family: 'Galbash' });
+// ... (باقي الكود كما هو)
 
 const LOGS = {
     TIMEOUT: '1505581523376668894',
