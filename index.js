@@ -71,8 +71,8 @@ client.on('guildMemberAdd', async member => {
             ctx.restore();
         }
 
-        const scaleFactor = 2.2; // العدسة اللي تضبط وزنيتك
-
+        const scaleFactor = 1.0; // كذا الخط بيرجع لحجمه الطبيعي بدون تكبير مبالغ فيه
+        
         drawMassiveText(memberName, textX, nameY, scaleFactor);
         drawMassiveText(memberNick, textX, nickY, scaleFactor);
         drawMassiveText(memberId, textX, idY, scaleFactor);
