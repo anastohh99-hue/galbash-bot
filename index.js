@@ -36,18 +36,16 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // ==========================================
-        // 1. إعدادات النصوص (بالخط الأصلي حقك)
+        // 1. إعدادات النصوص (طباعة مباشرة خام)
         // ==========================================
         ctx.fillStyle = '#0c221d'; 
         
-        // 👇 رجعنا استخدام خطك المخصص "Galbash"
-        ctx.font = '20px "Galbash"'; 
-        
+        // إجبار الكود على مقاس 15 بكسل بدون أي دوال تكبير خارجية
+        ctx.font = '15px "Galbash"'; 
         ctx.textAlign = 'center'; 
         ctx.textBaseline = 'middle'; 
 
         const textX = 660; 
-        
         const nameY = 220; 
         const nickY = 295; 
         const idY = 370;   
@@ -56,27 +54,15 @@ client.on('guildMemberAdd', async member => {
         const memberName = member.user.username; 
         const memberNick = member.nickname || member.user.globalName || 'بدون لقب'; 
         const memberId = `GALB - ${member.guild.memberCount}`; 
-        
         const hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
+            day: 'numeric', month: 'long', year: 'numeric'
         }).format(new Date());
 
-        function drawMassiveText(text, x, y, scaleNum) {
-            ctx.save();
-            ctx.translate(x, y); 
-            ctx.scale(scaleNum, scaleNum); 
-            ctx.fillText(text, 0, 0); 
-            ctx.restore();
-        }
-
-        const scaleFactor = 1.0; // كذا الخط بيرجع لحجمه الطبيعي بدون تكبير مبالغ فيه
-        
-        drawMassiveText(memberName, textX, nameY, scaleFactor);
-        drawMassiveText(memberNick, textX, nickY, scaleFactor);
-        drawMassiveText(memberId, textX, idY, scaleFactor);
-        drawMassiveText(hijriDate, textX, dateY, scaleFactor);
+        // حذفنا دالة drawMassiveText تماماً للتعامل المباشر مع الخط
+        ctx.fillText(memberName, textX, nameY);
+        ctx.fillText(memberNick, textX, nickY);
+        ctx.fillText(memberId, textX, idY);
+        ctx.fillText(hijriDate, textX, dateY);
 
         // ==========================================
         // 2. إعدادات الأفاتار 
