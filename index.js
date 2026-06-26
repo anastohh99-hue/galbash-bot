@@ -26,7 +26,8 @@ client.on('guildMemberAdd', async member => {
     const channel = member.guild.channels.cache.get(WELCOME_CHANNEL_ID);
     if (!channel) return;
 
-    const welcomeText = `𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 Galbash | غلبش\n✦ ・  𝐌e𝐦𝐛𝐞𝐫 : <@${member.id}>\n✦ ・  𝐇𝐢𝐬 𝐍𝐮𝐦𝐛𝐞𝐫 : ${member.guild.memberCount}\n✦ ・  Rules : <#1505581491487375491>`;
+    // 👇 الرسالة الجديدة الفخمة والمزخرفة
+    const welcomeText = `╭・✦ ━━━ 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐆𝐀𝐋𝐁𝐀𝐒𝐇 ━━━ ✦・╮\n\n🏰 أهلاً بك في **مدينة الغلابيش**، تم إصدار إقامتك بنجاح!\n\n> 👤 **المواطن:** <@${member.id}>\n> 🔢 **رقم الإقامة:** \`GALB - ${member.guild.memberCount}\`\n> 📜 **قوانين المدينة:** <#1505581491487375491>\n\n╰・✦ ━━━━━━━━━━━━━━━━━━━━━━ ✦・╯`;
 
     try {
         const canvas = Canvas.createCanvas(1280, 720); 
