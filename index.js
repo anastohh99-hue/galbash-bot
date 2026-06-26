@@ -3,7 +3,9 @@ const keepAlive = require('./keep_alive.js');
 const { Client, GatewayIntentBits, AttachmentBuilder } = require('discord.js');
 const Canvas = require('canvas');
 
-// تم إزالة استدعاء font.ttf بالكامل لتجنب أي أخطاء في مسار الملفات
+// 👇 رجعنا تعريف الخط هنا
+const fontPath = path.join(__dirname, 'font.ttf');
+Canvas.registerFont(fontPath, { family: 'Galbash' });
 
 const WELCOME_CHANNEL_ID = '1505581496071753747';
 
@@ -34,14 +36,13 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // ==========================================
-        // 1. إعدادات النصوص 
+        // 1. إعدادات النصوص (بالخط الأصلي حقك)
         // ==========================================
         ctx.fillStyle = '#0c221d'; 
         
-        // استخدام خط النظام الافتراضي بدلاً من الخط الخارجي
-        ctx.font = 'bold 20px sans-serif'; 
+        // 👇 رجعنا استخدام خطك المخصص "Galbash"
+        ctx.font = '20px "Galbash"'; 
         
-        // المحاذاة للمنتصف 
         ctx.textAlign = 'center'; 
         ctx.textBaseline = 'middle'; 
 
@@ -62,7 +63,6 @@ client.on('guildMemberAdd', async member => {
             year: 'numeric'
         }).format(new Date());
 
-        // نظام العدسة الخاص بك
         function drawMassiveText(text, x, y, scaleNum) {
             ctx.save();
             ctx.translate(x, y); 
@@ -71,7 +71,7 @@ client.on('guildMemberAdd', async member => {
             ctx.restore();
         }
 
-        const scaleFactor = 2.2; 
+        const scaleFactor = 2.2; // العدسة اللي تضبط وزنيتك
 
         drawMassiveText(memberName, textX, nameY, scaleFactor);
         drawMassiveText(memberNick, textX, nickY, scaleFactor);
