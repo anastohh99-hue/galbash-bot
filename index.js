@@ -41,7 +41,7 @@ client.on('guildMemberAdd', async member => {
         ctx.fillStyle = '#0c221d'; 
         
         // إجبار الكود على مقاس 15 بكسل بدون أي دوال تكبير خارجية
-        ctx.font = '23px "Galbash"'; 
+        ctx.font = '22px "Galbash"'; 
         ctx.textAlign = 'center'; 
         ctx.textBaseline = 'middle'; 
 
