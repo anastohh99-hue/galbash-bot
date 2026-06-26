@@ -3,8 +3,7 @@ const keepAlive = require('./keep_alive.js');
 const { Client, GatewayIntentBits, AttachmentBuilder } = require('discord.js');
 const Canvas = require('canvas');
 
-const fontPath = path.join(__dirname, 'font.ttf');
-Canvas.registerFont(fontPath, { family: 'Galbash' });
+// تم إزالة استدعاء font.ttf بالكامل لتجنب أي أخطاء في مسار الملفات
 
 const WELCOME_CHANNEL_ID = '1505581496071753747';
 
@@ -16,7 +15,7 @@ const client = new Client({
     ]
 });
 
-client.once('clientReady', () => {
+client.once('ready', () => {
     console.log(`✅ البوت جاهز لإنشاء إقامات مدينة الغلابيش!`);
 });
 
@@ -39,13 +38,13 @@ client.on('guildMemberAdd', async member => {
         // ==========================================
         ctx.fillStyle = '#0c221d'; 
         
-        ctx.font = '20px "Galbash", sans-serif'; 
+        // استخدام خط النظام الافتراضي بدلاً من الخط الخارجي
+        ctx.font = 'bold 20px sans-serif'; 
         
         // المحاذاة للمنتصف 
         ctx.textAlign = 'center'; 
         ctx.textBaseline = 'middle'; 
 
-        // 👇 التعديل هنا: سحبنا النص لليمين (من 620 إلى 660) عشان يسنتر فوق الكلمة بالضبط
         const textX = 660; 
         
         const nameY = 220; 
@@ -63,6 +62,7 @@ client.on('guildMemberAdd', async member => {
             year: 'numeric'
         }).format(new Date());
 
+        // نظام العدسة الخاص بك
         function drawMassiveText(text, x, y, scaleNum) {
             ctx.save();
             ctx.translate(x, y); 
@@ -82,7 +82,7 @@ client.on('guildMemberAdd', async member => {
         // 2. إعدادات الأفاتار 
         // ==========================================
         const avatarSize = 332; 
-        const avatarX = 67;     
+        const avatarX = 67;      
         const avatarY = 225;    
 
         const avatarURL = member.user.displayAvatarURL({ extension: 'png', size: 512 });
