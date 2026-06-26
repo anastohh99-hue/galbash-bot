@@ -47,9 +47,9 @@ client.on('guildMemberAdd', async member => {
 
         const textX = 730; // زودنا الرقم عشان يدف النص لليمين
         const nameY = 210; 
-        const nickY = 295; 
-        const idY = 370;   
-        const dateY = 445; 
+        const nickY = 285; 
+        const idY = 360;   
+        const dateY = 435; 
 
         const memberName = member.user.username; 
         const memberNick = member.nickname || member.user.globalName || 'بدون لقب'; 
