@@ -3,7 +3,7 @@ const keepAlive = require('./keep_alive.js');
 const { Client, GatewayIntentBits, AttachmentBuilder } = require('discord.js');
 const Canvas = require('canvas');
 
-// 👇 رجعنا تعريف الخط هنا
+// إعداد الخط
 const fontPath = path.join(__dirname, 'font.ttf');
 Canvas.registerFont(fontPath, { family: 'Galbash' });
 
@@ -26,8 +26,17 @@ client.on('guildMemberAdd', async member => {
     const channel = member.guild.channels.cache.get(WELCOME_CHANNEL_ID);
     if (!channel) return;
 
-    // 👇 الرسالة الجديدة الفخمة والمزخرفة
-    const welcomeText = `╭・✦ ━━━ 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐆𝐀𝐋𝐁𝐀𝐒𝐇 ━━━ ✦・╮\n\n🏰 أهلاً بك في **مدينة الغلابيش**، تم إصدار إقامتك بنجاح!\n\n> 👤 **المواطن:** <@${member.id}>\n> 🔢 **رقم الإقامة:** \`GALB - ${member.guild.memberCount}\`\n> 📜 **قوانين المدينة:** <#1505581491487375491>\n\n╰・✦ ━━━━━━━━━━━━━━━━━━━━━━ ✦・╯`;
+    // 👇 الترحيب الفخم، المنسق، والمليان إيموجيات رسمية وحلوة
+    const welcomeText = `> 🏛️ ┋ **أهـلاً وسـهـلاً بـك فـي مـديـنـة الـغـلـابـيـش**
+> ✨ ┋ نورتنا يا غالي، وتم استخراج إقامتك الرسمية بنجاح!
+
+╭ ✦ ━━━━━━━━━━━━━━━━━ ✦ ╮
+ 👤 ┊ **المواطن:** <@${member.id}>
+ 🪪 ┊ **رقم الإقامة:** \`GALB - ${member.guild.memberCount}\`
+ 📜 ┊ **دستور المدينة:** <#1505581491487375491>
+╰ ✦ ━━━━━━━━━━━━━━━━━ ✦ ╯
+
+نتمنى لك إقامة سعيدة وممتعة بين أهلك الغلابيش! 🤍👑`;
 
     try {
         const canvas = Canvas.createCanvas(1280, 720); 
@@ -37,16 +46,14 @@ client.on('guildMemberAdd', async member => {
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
         // ==========================================
-        // 1. إعدادات النصوص (طباعة مباشرة خام)
+        // 1. إعدادات النصوص
         // ==========================================
         ctx.fillStyle = '#0c221d'; 
-        
-        // إجبار الكود على مقاس 15 بكسل بدون أي دوال تكبير خارجية
         ctx.font = '21px "Galbash"'; 
         ctx.textAlign = 'center'; 
         ctx.textBaseline = 'middle'; 
 
-        const textX = 730; // زودنا الرقم عشان يدف النص لليمين
+        const textX = 730; 
         const nameY = 210; 
         const nickY = 285; 
         const idY = 360;   
@@ -59,7 +66,6 @@ client.on('guildMemberAdd', async member => {
             day: 'numeric', month: 'long', year: 'numeric'
         }).format(new Date());
 
-        // حذفنا دالة drawMassiveText تماماً للتعامل المباشر مع الخط
         ctx.fillText(memberName, textX, nameY);
         ctx.fillText(memberNick, textX, nickY);
         ctx.fillText(memberId, textX, idY);
