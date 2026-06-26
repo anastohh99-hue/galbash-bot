@@ -45,7 +45,7 @@ client.on('guildMemberAdd', async member => {
         ctx.textAlign = 'center'; 
         ctx.textBaseline = 'middle'; 
 
-        const textX = 690; // زودنا الرقم عشان يدف النص لليمين
+        const textX = 730; // زودنا الرقم عشان يدف النص لليمين
         const nameY = 220; 
         const nickY = 295; 
         const idY = 370;   
