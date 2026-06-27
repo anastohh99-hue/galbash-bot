@@ -7,7 +7,7 @@ const Canvas = require('canvas');
 const fontPath = path.join(__dirname, 'font.ttf');
 Canvas.registerFont(fontPath, { family: 'Galbash' });
 
-const WELCOME_CHANNEL_ID = '1505581496071753747';
+const WELCOME_CHANNEL_ID = '1520275953505402930';
 
 const client = new Client({
     intents: [
